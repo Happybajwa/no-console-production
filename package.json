@@ -1,7 +1,8 @@
 {
   "name": "no-console-production",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
@@ -12,7 +13,7 @@
     "production",
     "logging"
   ],
-  "author": "Your Name",
+  "author": "Harry",
   "license": "MIT",
   "description": "A React component to suppress console logs, warnings, errors, and debug messages in production.",
   "files": [
