@@ -1,17 +1,19 @@
 import React, { useEffect, useRef } from "react";
 import { ConsoleType } from "../interface/ConsoleType";
 
-
 interface ConsoleSuppressionProps {
   children: React.ReactNode;
   suppress?: ConsoleType[];
+  suppressInDev?: boolean; 
+  suppressInProd?: boolean;
 }
 
 export const WithConsoleSuppression: React.FC<ConsoleSuppressionProps> = ({
   children,
   suppress,
+  suppressInDev = false,
+  suppressInProd = true,
 }) => {
-  // Store original console methods to restore later
   const originalConsole = useRef({
     log: console.log,
     warn: console.warn,
@@ -20,35 +22,42 @@ export const WithConsoleSuppression: React.FC<ConsoleSuppressionProps> = ({
     info: console.info,
   });
 
+  // Set default suppression if suppress is undefined or empty
   if (suppress?.length === 0 || !suppress) {
     suppress = ["log", "warn", "error", "debug"];
   }
 
-  // Immediately override console methods when component mounts
-  suppress.forEach((type) => {
-    switch (type) {
-      case "log":
-        console.log = () => {}; // Suppress log
-        break;
-      case "warn":
-        console.warn = () => {}; // Suppress warn
-        break;
-      case "error":
-        console.error = () => {}; // Suppress error
-        break;
-      case "debug":
-        console.debug = () => {}; // Suppress debug
-        break;
-      case "info":
-        console.info = () => {}; // Suppress info
-        break;
-      default:
-        break;
-    }
-  });
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const shouldSuppress =
+    (isDevelopment && suppressInDev) || (!isDevelopment && suppressInProd);
 
-  // Cleanup effect to restore original console methods on unmount
   useEffect(() => {
+    if (!shouldSuppress) return;
+
+    // Suppress console methods
+    suppress.forEach((type) => {
+      switch (type) {
+        case "log":
+          console.log = () => {};
+          break;
+        case "warn":
+          console.warn = () => {};
+          break;
+        case "error":
+          console.error = () => {};
+          break;
+        case "debug":
+          console.debug = () => {};
+          break;
+        case "info":
+          console.info = () => {};
+          break;
+        default:
+          break;
+      }
+    });
+
+    // Restore original console methods on unmount
     return () => {
       console.log = originalConsole.current.log;
       console.warn = originalConsole.current.warn;
@@ -56,10 +65,6 @@ export const WithConsoleSuppression: React.FC<ConsoleSuppressionProps> = ({
       console.debug = originalConsole.current.debug;
       console.info = originalConsole.current.info;
     };
-  }, []);
-
+  }, [suppress, shouldSuppress]);
   return <>{children}</>;
 };
-
-
-

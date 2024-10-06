@@ -5,6 +5,8 @@ declare module "no-console-production" {
     interface WithConsoleSuppressionProps {
         children: React.ReactNode;
         suppress?: ConsoleType[];
+        suppressInDev?: boolean;
+        suppressInProd?: boolean;
     }
 
     export const WithConsoleSuppression: React.FC<WithConsoleSuppressionProps>;
