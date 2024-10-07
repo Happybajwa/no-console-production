@@ -36,7 +36,7 @@ If you want to suppress all console methods except errors, you can pass all othe
 
 ### Props
 
-- suppress (optional): An array of console methods to suppress. By default, all console methods (log, warn, error, debug, info) are suppressed unless explicitly specified. If not provided, the default is ["log", "warn", "error", "debug", "info"].
+- suppress (optional): An array of console methods to suppress. If suppressAllInDev (for development) or suppressAllInProd (for production) is set to true, all console methods (log, warn, error, debug, info) will be suppressed.   If neither is true and no suppress array is provided, nothing will be suppressed by default. If specific console methods are passed in the suppress array (e.g., ["warn", "error"]), only those methods will be suppress
 
 - suppressAllInDev (optional): A boolean flag to specify whether all console outputs should be suppressed in development mode. If true, all console methods will be suppressed in the development environment. The default is false.
 
