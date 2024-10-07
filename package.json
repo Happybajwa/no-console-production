@@ -4,9 +4,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.prod.json",
-    "build:playground": "esbuild playground/playground.tsx --bundle --outfile=dist/playground.js --loader:.tsx=tsx --define:process.env.NODE_ENV='development'",
-    "start": "http-server . -c-1"
+    "build": "tsc -p tsconfig.prod.json"
   },
   "keywords": [
     "console",
