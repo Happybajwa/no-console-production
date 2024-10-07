@@ -5,15 +5,15 @@ export type ConsoleType = "log" | "warn" | "error" | "debug" | "info";
 interface ConsoleSuppressionProps {
   children: React.ReactNode;
   suppress?: ConsoleType[];
-  suppressInDev?: boolean;
-  suppressInProd?: boolean;
+  suppressAllInDev?: boolean;
+  suppressAllInProd?: boolean;
 }
 
 export const WithConsoleSuppression: React.FC<ConsoleSuppressionProps> = ({
   children,
   suppress = ["log", "warn", "error", "debug", "info"], // Default suppression
-  suppressInDev = false,
-  suppressInProd = false,
+  suppressAllInDev: suppressInDev = false,
+  suppressAllInProd: suppressInProd = false,
 }) => {
   const isDevelopment = process.env.NODE_ENV === "development";
 
