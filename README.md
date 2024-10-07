@@ -18,14 +18,6 @@ yarn add no-console-production
 bun add no-console-production
 ```
 
-
-## Props
-- suppress (optional): An array of console methods to suppress. By default, all console methods (log, warn, error, debug, info) are suppressed unless explicitly specified. If not provided, the default is ["log", "warn", "error", "debug", "info"].
-
-- suppressAllInDev (optional): A boolean flag to specify whether all console outputs should be suppressed in development mode. If true, all console methods will be suppressed in the development environment. The default is false.
-
-- suppressAllInProd (optional): A boolean flag to specify whether all console outputs should be suppressed in production mode. If true, all console methods will be suppressed in the production environment. The default is false.
-
 ### How It Works
 
 - Environment Detection: The component first determines whether the current environment is development by checking the value of process.env.NODE_ENV. This is used to conditionally apply console suppression based on the suppressAllInDev and suppressAllInProd flags.
@@ -41,7 +33,18 @@ bun add no-console-production
 
 If you want to suppress all console methods except errors, you can pass all other methods in the suppress array and leave out "error". This will ensure that only console.error is logged in any environment, and all other console outputs are suppressed.
 
+
+### Props
+
+- suppress (optional): An array of console methods to suppress. By default, all console methods (log, warn, error, debug, info) are suppressed unless explicitly specified. If not provided, the default is ["log", "warn", "error", "debug", "info"].
+
+- suppressAllInDev (optional): A boolean flag to specify whether all console outputs should be suppressed in development mode. If true, all console methods will be suppressed in the development environment. The default is false.
+
+- suppressAllInProd (optional): A boolean flag to specify whether all console outputs should be suppressed in production mode. If true, all console methods will be suppressed in the production environment. The default is false.
+
+
 ## Usage
+
 
 Wrap your component with `WithConsoleSuppression` to suppress console outputs:
 
@@ -71,12 +74,6 @@ export default App;
 
 If no value is provided for the `suppress` prop, **all console methods** (`log`, `warn`, `error`, `debug`, `info`) will be suppressed by default.
 
-### Props
-- suppress (optional): An array of console methods to suppress. By default, all console methods (log, warn, error, debug, info) are suppressed unless explicitly specified. If not provided, the default is ["log", "warn", "error", "debug", "info"].
-
-- suppressAllInDev (optional): A boolean flag to specify whether all console outputs should be suppressed in development mode. If true, all console methods will be suppressed in the development environment. The default is false.
-
-- suppressAllInProd (optional): A boolean flag to specify whether all console outputs should be suppressed in production mode. If true, all console methods will be suppressed in the production environment. The default is false.
 
 
 ## License
