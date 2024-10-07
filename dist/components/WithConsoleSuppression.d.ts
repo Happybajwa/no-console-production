@@ -1,5 +1,5 @@
 import React from "react";
-import { ConsoleType } from "../interface/ConsoleType";
+export type ConsoleType = "log" | "warn" | "error" | "debug" | "info";
 interface ConsoleSuppressionProps {
     children: React.ReactNode;
     suppress?: ConsoleType[];
