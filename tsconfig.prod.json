@@ -13,6 +13,5 @@
       "declarationDir": "./dist"
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist", "playground.tsx"]
+    "exclude": ["node_modules", "dist"]
   }
-  
