@@ -11,7 +11,7 @@ interface ConsoleSuppressionProps {
 
 export const WithConsoleSuppression: React.FC<ConsoleSuppressionProps> = ({
   children,
-  suppress = ["log", "warn", "error", "debug", "info"], // Default suppression
+  suppress = [],
   suppressAllInDev: suppressInDev = false,
   suppressAllInProd: suppressInProd = false,
 }) => {
