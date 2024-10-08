@@ -1,5 +1,5 @@
-import { ConsoleType, WithConsoleSuppression } from "./components/WithConsoleSuppression";
+import { ConsoleType, suppressConsole } from './components/suppressConsole';
 
 // src/index.tsx
-export { WithConsoleSuppression };
+export { suppressConsole };
 export type { ConsoleType };

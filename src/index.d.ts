@@ -2,12 +2,11 @@
 declare module "no-console-production" {
     type ConsoleType = "log" | "warn" | "error" | "debug" | "info";
 
-    interface WithConsoleSuppressionProps {
-        children: React.ReactNode;
+    interface ConsoleSuppressionOptions {
         suppress?: ConsoleType[];
         suppressAllInDev?: boolean;
         suppressAllInProd?: boolean;
     }
 
-    export const WithConsoleSuppression: React.FC<WithConsoleSuppressionProps>;
+    export const suppressConsole: (options?: ConsoleSuppressionOptions) => void;
 }
