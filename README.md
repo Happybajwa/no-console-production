@@ -40,7 +40,7 @@ suppressConsole();
 // Your app code works normally
 console.log("Debug info"); // Hidden in production ✅
 console.warn("Warning"); // Hidden in production ✅
-console.error("Real error"); // Always visible 🚨 (for monitoring)
+console.error("Real error"); // Visible by default 🚨 (for monitoring)
 ```
 
 ## 📋 Complete Usage Guide
@@ -111,8 +111,8 @@ function AppWithCustomSuppression() {
 
 | Approach | Development | Production | Errors | Custom Methods |
 |----------|-------------|------------|--------|----------------|
-| **Basic** (no props) | All visible ✅ | Logs/warnings hidden ❌, Errors visible ✅ | Always visible | Uses defaults |
-| **Custom** (with props) | All visible ✅ | Only `log`/`debug` hidden ❌, Others visible ✅ | Always visible | You control exactly what's hidden |
+| **Basic** (no props) | All visible ✅ | Logs/warnings hidden ❌, Errors visible ✅ | Visible by default | Uses defaults |
+| **Custom** (with props) | All visible ✅ | Only `log`/`debug` hidden ❌, Others visible ✅ | Visible by default | You control exactly what's hidden |
 
 ## ⚙️ Configuration Options
 
@@ -126,6 +126,10 @@ interface ConsoleSuppressionOptions {
 
 type ConsoleMethod = "log" | "warn" | "error" | "debug" | "info";
 ```
+
+> **⚠️ Important**: Errors can be hidden in two ways:
+> 1. Set `preserveErrors: false`
+> 2. Explicitly include `"error"` in the `methods` array (overrides preserveErrors)
 
 ## 🎛️ ALL POSSIBLE SCENARIOS
 
@@ -208,7 +212,30 @@ console.error("Error"); // ✅ Visible (preserved despite being in methods)
 console.debug("Debug"); // ✅ Visible (not in methods)
 ```
 
-### **Scenario 6: React Hook with Conditional Control**
+### **Scenario 6: How to Hide Errors (Two Ways)**
+
+```typescript
+// Method 1: Set preserveErrors to false
+suppressConsole({
+  preserveErrors: false, // This will hide ALL console methods including errors
+});
+
+console.log("Log"); // ❌ Hidden
+console.error("Error"); // ❌ Hidden (preserveErrors disabled)
+
+// Method 2: Explicitly include 'error' in methods array
+suppressConsole({
+  methods: ["log", "warn", "error"], // Explicitly request error suppression
+  preserveErrors: true, // This is ignored when error is explicit
+});
+
+console.log("Log"); // ❌ Hidden
+console.warn("Warning"); // ❌ Hidden  
+console.error("Error"); // ❌ Hidden (explicitly requested)
+console.debug("Debug"); // ✅ Visible (not in methods)
+```
+
+### **Scenario 7: React Hook with Conditional Control**
 
 ```typescript
 function MyComponent() {
@@ -231,7 +258,7 @@ function MyComponent() {
 }
 ```
 
-### **Scenario 7: Environment-Specific Configurations**
+### **Scenario 8: Environment-Specific Configurations**
 
 ```typescript
 // Advanced environment control

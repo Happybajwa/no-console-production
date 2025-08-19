@@ -38,7 +38,11 @@ export const suppressConsole = ({
   // Determine which methods to suppress
   let methodsToSuppress: ConsoleMethod[] = [];
 
-  if (suppressAllInDev && isDevelopment) {
+  if (methods.length > 0) {
+    // When methods are explicitly provided, respect the user's choice completely
+    // This takes precedence over all other settings
+    methodsToSuppress = methods;
+  } else if (suppressAllInDev && isDevelopment) {
     methodsToSuppress = preserveErrors
       ? ["log", "warn", "debug", "info"]
       : ["log", "warn", "error", "debug", "info"];
@@ -46,11 +50,6 @@ export const suppressConsole = ({
     methodsToSuppress = preserveErrors
       ? ["log", "warn", "debug", "info"]
       : ["log", "warn", "error", "debug", "info"];
-  } else if (methods.length > 0) {
-    // Apply preserveErrors to custom methods as well
-    methodsToSuppress = preserveErrors
-      ? methods.filter((method) => method !== "error") // Remove 'error' if preserving
-      : methods; // Use all specified methods
   }
 
   // Early return if nothing to suppress
