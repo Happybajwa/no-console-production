@@ -1,21 +1,28 @@
 {
   "name": "no-console-production",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.prod.json"
+    "build": "tsc -p tsconfig.prod.json",
+    "test": "node test.js",
+    "test:react": "node test-react.js",
+    "test:all": "npm run test && npm run test:react"
   },
   "keywords": [
     "console",
     "suppress",
     "React",
     "production",
-    "logging"
+    "logging",
+    "typescript",
+    "performance",
+    "hooks",
+    "lightweight"
   ],
   "author": "Harry",
   "license": "MIT",
-  "description": "A React component to suppress console logs, warnings, errors, and debug messages in production.",
+  "description": "A lightweight, performant library to suppress console logs in production while preserving critical errors. Supports React hooks, components, and vanilla JavaScript.",
   "files": [
     "dist",
     "README.md"
@@ -28,5 +35,13 @@
     "eslint": "^9.12.0",
     "react": "^18.3.1",
     "typescript": "^5.6.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Happybajwa/no-console-production.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Happybajwa/no-console-production/issues"
+  },
+  "homepage": "https://github.com/Happybajwa/no-console-production#readme"
 }

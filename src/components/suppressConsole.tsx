@@ -1,70 +1,110 @@
 // src/consoleSuppression.ts
-export type ConsoleType = "log" | "warn" | "error" | "debug" | "info";
+export type ConsoleMethod = "log" | "warn" | "error" | "debug" | "info";
 
 interface ConsoleSuppressionOptions {
-  suppress?: ConsoleType[];
+  methods?: ConsoleMethod[];
   suppressAllInDev?: boolean;
   suppressAllInProd?: boolean;
+  preserveErrors?: boolean; // Keep errors even in production
 }
 
+// Singleton pattern to prevent multiple suppressions
+let isSuppressionActive = false;
+let originalMethods: Partial<Console> = {};
+let suppressedMethods: Set<ConsoleMethod> = new Set();
+
+/**
+ * Suppresses console methods based on environment and configuration
+ * @param options Configuration options for console suppression
+ * @returns Cleanup function to restore console methods
+ */
 export const suppressConsole = ({
-  suppress = [],
+  methods = [],
   suppressAllInDev = false,
   suppressAllInProd = true,
-}: ConsoleSuppressionOptions = {}) => {
-  const isDevelopment = process.env.NODE_ENV === "development";
+  preserveErrors = true, // Safe default: keep errors
+}: ConsoleSuppressionOptions = {}): (() => void) => {
+  // Early return if already suppressed to prevent performance overhead
+  if (isSuppressionActive) {
+    return restoreConsole;
+  }
 
-  let shouldSuppress = false;
+  // Environment detection with fallback
+  const isDevelopment =
+    typeof process !== "undefined"
+      ? process.env.NODE_ENV === "development"
+      : false;
+
+  // Determine which methods to suppress
+  let methodsToSuppress: ConsoleMethod[] = [];
 
   if (suppressAllInDev && isDevelopment) {
-    shouldSuppress = true;
-    suppress = ["log", "warn", "error", "debug", "info"];
+    methodsToSuppress = preserveErrors
+      ? ["log", "warn", "debug", "info"]
+      : ["log", "warn", "error", "debug", "info"];
   } else if (suppressAllInProd && !isDevelopment) {
-    shouldSuppress = true;
-    suppress = ["log", "warn", "error", "debug", "info"];
-  } else if (suppress.length > 0) {
-    shouldSuppress = true;
+    methodsToSuppress = preserveErrors
+      ? ["log", "warn", "debug", "info"]
+      : ["log", "warn", "error", "debug", "info"];
+  } else if (methods.length > 0) {
+    // Apply preserveErrors to custom methods as well
+    methodsToSuppress = preserveErrors
+      ? methods.filter((method) => method !== "error") // Remove 'error' if preserving
+      : methods; // Use all specified methods
   }
 
-  if (shouldSuppress) {
-    const originalConsole = {
-      log: console.log,
-      warn: console.warn,
-      error: console.error,
-      debug: console.debug,
-      info: console.info,
-    };
-
-    // Override console methods as per the `suppress` array
-    suppress.forEach((type) => {
-      switch (type) {
-        case "log":
-          console.log = () => {};
-          break;
-        case "warn":
-          console.warn = () => {};
-          break;
-        case "error":
-          console.error = () => {};
-          break;
-        case "debug":
-          console.debug = () => {};
-          break;
-        case "info":
-          console.info = () => {};
-          break;
-        default:
-          break;
-      }
-    });
-
-    // Restore original console methods on unmount or cleanup
-    window.addEventListener("beforeunload", () => {
-      console.log = originalConsole.log;
-      console.warn = originalConsole.warn;
-      console.error = originalConsole.error;
-      console.debug = originalConsole.debug;
-      console.info = originalConsole.info;
-    });
+  // Early return if nothing to suppress
+  if (methodsToSuppress.length === 0) {
+    return () => {}; // No-op cleanup function
   }
+
+  // Store original methods before suppression
+  methodsToSuppress.forEach((method) => {
+    if (console[method]) {
+      originalMethods[method] = console[method];
+      suppressedMethods.add(method);
+      // Use empty function with minimal overhead
+      (console as any)[method] = () => {};
+    }
+  });
+
+  isSuppressionActive = true;
+
+  // Return cleanup function instead of using beforeunload
+  return restoreConsole;
+};
+
+/**
+ * Restores original console methods
+ */
+export const restoreConsole = (): void => {
+  if (!isSuppressionActive) return;
+
+  // Restore original methods
+  suppressedMethods.forEach((method) => {
+    if (originalMethods[method]) {
+      (console as any)[method] = originalMethods[method];
+    }
+  });
+
+  // Reset state
+  originalMethods = {};
+  suppressedMethods.clear();
+  isSuppressionActive = false;
+};
+
+/**
+ * Check if console suppression is currently active
+ * @returns True if suppression is active, false otherwise
+ */
+export const isConsoleSuppressionActive = (): boolean => {
+  return isSuppressionActive;
+};
+
+/**
+ * Get list of currently suppressed console methods
+ * @returns Array of suppressed console methods
+ */
+export const getSuppressedMethods = (): ConsoleMethod[] => {
+  return Array.from(suppressedMethods);
 };
