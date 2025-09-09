@@ -1,13 +1,17 @@
 {
   "name": "no-console-production",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.prod.json",
-    "test": "node test.js",
-    "test:react": "node test-react.js",
-    "test:all": "npm run test && npm run test:react"
+    "test": "npm run test:comprehensive",
+    "test:comprehensive": "tsx tests/run-all-tests.ts",
+    "test:unit": "tsx tests/unit/console-suppression.test.ts && tsx tests/unit/environment.test.ts && tsx tests/unit/console-methods.test.ts",
+    "test:integration": "tsx tests/integration/real-world-scenarios.test.ts",
+    "test:all": "npm run test:comprehensive",
+    "test:dev": "NODE_ENV=development npm run test:comprehensive",
+    "test:prod": "NODE_ENV=production npm run test:comprehensive"
   },
   "keywords": [
     "console",
@@ -30,10 +34,8 @@
   "devDependencies": {
     "@types/node": "^22.7.4",
     "@types/react": "^18.3.11",
-    "@typescript-eslint/eslint-plugin": "^8.8.0",
-    "@typescript-eslint/parser": "^8.8.0",
-    "eslint": "^9.12.0",
     "react": "^18.3.1",
+    "tsx": "^4.20.5",
     "typescript": "^5.6.2"
   },
   "repository": {

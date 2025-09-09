@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react';
 import { useConsoleSuppression } from '../hooks/useConsoleSuppression';
-import { ConsoleMethod } from '../components/suppressConsole';
+import type { ConsoleSuppressionOptions } from '../types/console.types';
 
-interface ConsoleSuppressionProviderProps {
+interface ConsoleSuppressionProviderProps extends ConsoleSuppressionOptions {
   children: ReactNode;
-  methods?: ConsoleMethod[];
-  suppressAllInDev?: boolean;
-  suppressAllInProd?: boolean;
-  preserveErrors?: boolean;
+  /**
+   * Whether to enable console suppression
+   * @default true
+   */
   enabled?: boolean;
 }
 
