@@ -8,21 +8,21 @@ import type { ConsoleMethod, ConsoleSuppressionOptions } from "../types/console.
  * Default console methods that can be suppressed
  */
 export const DEFAULT_CONSOLE_METHODS: readonly ConsoleMethod[] = [
-  "log",
-  "warn", 
-  "error",
-  "debug",
-  "info"
+    "log",
+    "warn",
+    "error",
+    "debug",
+    "info"
 ] as const;
 
 /**
  * Console methods excluding errors (for preserveErrors option)
  */
 export const NON_ERROR_CONSOLE_METHODS: readonly ConsoleMethod[] = [
-  "log",
-  "warn",
-  "debug", 
-  "info"
+    "log",
+    "warn",
+    "debug",
+    "info"
 ] as const;
 
 /**
@@ -32,29 +32,29 @@ export const NON_ERROR_CONSOLE_METHODS: readonly ConsoleMethod[] = [
  * @returns Array of console methods to suppress
  */
 export const getMethodsToSuppress = (
-  options: ConsoleSuppressionOptions,
-  isDevelopment: boolean
+    options: ConsoleSuppressionOptions,
+    isDevelopment: boolean
 ): ConsoleMethod[] => {
-  const { methods, suppressAllInDev, suppressAllInProd, preserveErrors } = options;
+    const { methods, suppressAllInDev, suppressAllInProd, preserveErrors } = options;
 
-  // If specific methods are provided, use them (overrides all other settings)
-  if (methods && methods.length > 0) {
-    return methods;
-  }
+    // If specific methods are provided, use them (overrides all other settings)
+    if (methods && methods.length > 0) {
+        return methods;
+    }
 
-  // Check if we should suppress based on environment
-  const shouldSuppressInCurrentEnv =
-    (isDevelopment && suppressAllInDev) ||
-    (!isDevelopment && suppressAllInProd);
+    // Check if we should suppress based on environment
+    const shouldSuppressInCurrentEnv =
+        (isDevelopment && suppressAllInDev) ||
+        (!isDevelopment && suppressAllInProd);
 
-  if (!shouldSuppressInCurrentEnv) {
-    return [];
-  }
+    if (!shouldSuppressInCurrentEnv) {
+        return [];
+    }
 
-  // Return appropriate method list based on preserveErrors setting
-  return preserveErrors 
-    ? [...NON_ERROR_CONSOLE_METHODS]
-    : [...DEFAULT_CONSOLE_METHODS];
+    // Return appropriate method list based on preserveErrors setting
+    return preserveErrors
+        ? [...NON_ERROR_CONSOLE_METHODS]
+        : [...DEFAULT_CONSOLE_METHODS];
 };
 
 /**
@@ -63,5 +63,5 @@ export const getMethodsToSuppress = (
  * @returns true if method exists and is callable
  */
 export const isValidConsoleMethod = (method: ConsoleMethod): boolean => {
-  return typeof console[method] === "function";
+    return typeof console[method] === "function";
 };

@@ -11,8 +11,17 @@ import type { Environment } from "../types/console.types";
 export const detectEnvironment = (): Environment => {
   const nodeEnv = typeof process !== "undefined" ? process.env.NODE_ENV : undefined;
   
+  // Only suppress in production-like environments
+  // Everything else (undefined, dev, development, local) is treated as development
+  const isProduction = nodeEnv === "production" || 
+                      nodeEnv === "prod" || 
+                      nodeEnv === "staging" || 
+                      nodeEnv === "test" || 
+                      nodeEnv === "uat" || 
+                      nodeEnv === "preview";
+  
   return {
-    isDevelopment: nodeEnv === "development",
+    isDevelopment: !isProduction,
     nodeEnv,
   };
 };
