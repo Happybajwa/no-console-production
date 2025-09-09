@@ -1,20 +1,34 @@
-import { 
-  ConsoleMethod, 
-  suppressConsole, 
-  restoreConsole, 
-  isConsoleSuppressionActive, 
-  getSuppressedMethods 
-} from './components/suppressConsole';
-import { useConsoleSuppression } from './hooks/useConsoleSuppression';
-import { ConsoleSuppressionProvider } from './components/ConsoleSuppressionProvider';
+/**
+ * @fileoverview Main entry point for no-console-production library
+ * @version 3.1.0
+ */
 
-// Export all public APIs
-export { 
-  suppressConsole, 
-  restoreConsole, 
-  useConsoleSuppression, 
-  ConsoleSuppressionProvider,
+// Core functionality
+export {
+  suppressConsole,
+  restoreConsole,
   isConsoleSuppressionActive,
-  getSuppressedMethods
-};
-export type { ConsoleMethod };
+  getSuppressedMethods,
+} from "./core/console-suppression";
+
+// React components and hooks
+export { useConsoleSuppression } from "./hooks/useConsoleSuppression";
+export { ConsoleSuppressionProvider } from "./components/ConsoleSuppressionProvider";
+
+// Type exports
+export type {
+  ConsoleMethod,
+  ConsoleSuppressionOptions,
+  ConsoleSuppressionState,
+  RestoreFunction,
+  Environment,
+} from "./types/console.types";
+
+// Utility exports
+export { detectEnvironment, isProduction, isDevelopment } from "./utils/environment";
+export { 
+  DEFAULT_CONSOLE_METHODS, 
+  NON_ERROR_CONSOLE_METHODS,
+  getMethodsToSuppress,
+  isValidConsoleMethod 
+} from "./utils/console-methods";

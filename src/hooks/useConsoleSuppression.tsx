@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react';
-import { suppressConsole, ConsoleMethod } from '../components/suppressConsole';
+import { suppressConsole } from '../core/console-suppression';
+import type { ConsoleSuppressionOptions, ConsoleMethod } from '../types/console.types';
 
-interface UseConsoleSuppressionOptions {
-  methods?: ConsoleMethod[];
-  suppressAllInDev?: boolean;
-  suppressAllInProd?: boolean;
-  preserveErrors?: boolean;
-  enabled?: boolean; // Allow conditional suppression
+interface UseConsoleSuppressionOptions extends ConsoleSuppressionOptions {
+  /**
+   * Whether to enable console suppression
+   * @default true
+   */
+  enabled?: boolean;
 }
 
 /**
