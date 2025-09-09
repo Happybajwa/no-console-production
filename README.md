@@ -10,16 +10,16 @@
 
 ## 📦 Bundle Size & Performance
 
-- **Main Bundle**: ~1.5KB minified 
+- **Main Bundle**: ~1.5KB minified
 - **Gzipped**: ~800 bytes
-- **Runtime Dependencies**: 0 
+- **Runtime Dependencies**: 0
 - **Startup Overhead**: ~0.1ms
 - **Memory Footprint**: <1KB
 
 ## Why?
 
 - 🚀 **Better Performance** - Remove console logs that slow down production
-- 🔒 **Security** - Hide debug information from users  
+- 🔒 **Security** - Hide debug information from users
 - 🧹 **Clean Console** - No clutter for end users
 - 🛠️ **Keep Errors** - Still see important errors for monitoring
 - ⚡ **Zero Dependencies** - No bloat, no security vulnerabilities## Install
