@@ -30,21 +30,16 @@ src/
 ├── hooks/          # React hooks
 └── index.tsx       # Main exports
 
-tests/
-├── unit/           # Unit tests
-├── integration/    # Integration tests
-└── utils/          # Test helpers
+test.ts             # Comprehensive test suite
 ```
 
 ## 🧪 Testing
 
 ```bash
-npm test                    # Run all tests
-npm run test:unit          # Unit tests only
-npm run test:integration   # Integration tests only
+npm test           # Run all tests (single test.ts file)
 ```
 
-**All PRs must have tests and pass the full test suite (36 tests).**
+**All PRs must have tests and pass the full test suite (18 tests).**
 
 ## 📝 Code Standards
 
@@ -57,7 +52,7 @@ npm run test:integration   # Integration tests only
 
 1. **Create feature branch**: `git checkout -b feature/your-feature`
 2. **Make changes** with tests
-3. **Run tests**: `npm test` (must pass all 36 tests)
+3. **Run tests**: `npm test` (must pass all 18 tests)
 4. **Build**: `npm run build` (must succeed)
 5. **Commit**: Use clear, descriptive messages
 6. **Push**: `git push origin feature/your-feature`
@@ -81,10 +76,8 @@ Open an issue with:
 ## ⚡ Development Commands
 
 ```bash
-npm test                    # All tests
-npm run build              # Build distribution
-npm run test:dev           # Test in development mode
-npm run test:prod          # Test in production mode
+npm test           # Run all tests (test.ts)
+npm run build      # Build distribution
 ```
 
 ## 🏗️ Architecture Guidelines
@@ -93,7 +86,7 @@ npm run test:prod          # Test in production mode
 - **Types**: Define in `src/types/`
 - **Utilities**: Add to `src/utils/`
 - **React features**: Use `src/components/` and `src/hooks/`
-- **Tests**: Match source structure in `tests/`
+- **Tests**: Add to `test.ts` with clear test names
 
 ## 📦 Release Process
 
