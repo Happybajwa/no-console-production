@@ -1,35 +1,39 @@
-import React, { ReactNode } from 'react';
-import { useConsoleSuppression } from '../hooks/useConsoleSuppression';
-import type { ConsoleSuppressionOptions } from '../types/console.types';
+/**
+ * @fileoverview React provider component for console suppression
+ * @version 4.0.0
+ */
 
-interface ConsoleSuppressionProviderProps extends ConsoleSuppressionOptions {
+import React, { ReactNode } from "react";
+import { useConsoleSuppression } from "../hooks/useConsoleSuppression";
+import type { ConsoleConfig } from "../types/console.types";
+
+interface ConsoleSuppressionProviderProps {
   children: ReactNode;
-  /**
-   * Whether to enable console suppression
-   * @default true
-   */
-  enabled?: boolean;
+  config: ConsoleConfig | ConsoleConfig[];
 }
 
 /**
  * React component that provides console suppression for its children
  * Lightweight wrapper around useConsoleSuppression hook
+ *
+ * @example
+ * <ConsoleSuppressionProvider config={{ url: 'myapp.com', enable: true }}>
+ *   <App />
+ * </ConsoleSuppressionProvider>
+ *
+ * @example
+ * <ConsoleSuppressionProvider config={[
+ *   { url: 'myapp.com', enable: true },
+ *   { url: 'localhost', enable: false }
+ * ]}>
+ *   <App />
+ * </ConsoleSuppressionProvider>
  */
 export const ConsoleSuppressionProvider = ({
   children,
-  methods,
-  suppressAllInDev = false,
-  suppressAllInProd = true,
-  preserveErrors = true,
-  enabled = true,
+  config,
 }: ConsoleSuppressionProviderProps) => {
-  useConsoleSuppression({
-    methods,
-    suppressAllInDev,
-    suppressAllInProd,
-    preserveErrors,
-    enabled,
-  });
+  useConsoleSuppression(config);
 
   // Just render children - no wrapper div to avoid DOM pollution
   return <>{children}</>;

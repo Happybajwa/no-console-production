@@ -1,61 +1,55 @@
+/**
+ * @fileoverview React hook for console suppression
+ * @version 4.0.0
+ */
+
 import { useEffect, useRef } from 'react';
 import { suppressConsole } from '../core/console-suppression';
-import type { ConsoleSuppressionOptions, ConsoleMethod } from '../types/console.types';
-
-interface UseConsoleSuppressionOptions extends ConsoleSuppressionOptions {
-  /**
-   * Whether to enable console suppression
-   * @default true
-   */
-  enabled?: boolean;
-}
+import type { ConsoleConfig } from '../types/console.types';
 
 /**
  * React hook for console suppression with automatic cleanup
- * @param options Configuration options for console suppression
+ * @param config - Single config or array of configs for URL-based suppression
+ * 
+ * @example
+ * // Single rule
+ * useConsoleSuppression({ url: 'myapp.com', enable: true });
+ * 
+ * @example
+ * // Multiple rules
+ * useConsoleSuppression([
+ *   { url: 'myapp.com', enable: true },
+ *   { url: 'localhost', enable: false }
+ * ]);
+ * 
+ * @example
+ * // With custom methods
+ * useConsoleSuppression({ 
+ *   url: 'staging.myapp.com', 
+ *   enable: true, 
+ *   methods: ['log', 'debug'],
+ *   preserveErrors: true
+ * });
  */
-export const useConsoleSuppression = ({
-  methods = [],
-  suppressAllInDev = false,
-  suppressAllInProd = true,
-  preserveErrors = true,
-  enabled = true,
-}: UseConsoleSuppressionOptions = {}) => {
+export const useConsoleSuppression = (
+  config: ConsoleConfig | ConsoleConfig[]
+) => {
   const cleanupRef = useRef<(() => void) | null>(null);
+  const configRef = useRef(config);
 
   useEffect(() => {
-    if (!enabled) {
-      // If disabled and we have an active suppression, clean it up
-      if (cleanupRef.current) {
-        cleanupRef.current();
-        cleanupRef.current = null;
-      }
-      return;
-    }
+    // Update config ref
+    configRef.current = config;
 
     // Apply suppression
-    cleanupRef.current = suppressConsole({
-      methods,
-      suppressAllInDev,
-      suppressAllInProd,
-      preserveErrors,
-    });
+    cleanupRef.current = suppressConsole(config);
 
-    // Cleanup function
+    // Cleanup on unmount or config change
     return () => {
       if (cleanupRef.current) {
         cleanupRef.current();
         cleanupRef.current = null;
       }
     };
-  }, [methods, suppressAllInDev, suppressAllInProd, preserveErrors, enabled]);
-
-  // Also cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (cleanupRef.current) {
-        cleanupRef.current();
-      }
-    };
-  }, []);
+  }, [config]);
 };
