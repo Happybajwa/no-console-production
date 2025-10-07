@@ -1,32 +1,32 @@
 {
   "name": "no-console-production",
-  "version": "3.1.2",
+  "version": "4.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.prod.json",
-    "test": "npm run test:comprehensive",
-    "test:comprehensive": "tsx tests/run-all-tests.ts",
-    "test:unit": "tsx tests/unit/console-suppression.test.ts && tsx tests/unit/environment.test.ts && tsx tests/unit/console-methods.test.ts",
-    "test:integration": "tsx tests/integration/real-world-scenarios.test.ts",
-    "test:all": "npm run test:comprehensive",
-    "test:dev": "NODE_ENV=development npm run test:comprehensive",
-    "test:prod": "NODE_ENV=production npm run test:comprehensive"
+    "test": "tsx test.ts"
   },
   "keywords": [
     "console",
     "suppress",
-    "React",
     "production",
+    "url-based",
+    "webpack",
+    "vite",
+    "nextjs",
+    "cra",
+    "react",
     "logging",
     "typescript",
     "performance",
     "hooks",
-    "lightweight"
+    "lightweight",
+    "zero-dependencies"
   ],
   "author": "Harry",
   "license": "MIT",
-  "description": "A lightweight, performant library to suppress console logs in production while preserving critical errors. Supports React hooks, components, and vanilla JavaScript.",
+  "description": "Lightweight, URL-based console suppression for production. Works reliably with all bundlers (webpack, Vite, Next.js). Suppress console.log in production while keeping errors visible.",
   "files": [
     "dist",
     "README.md"

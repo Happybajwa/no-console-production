@@ -1,8 +1,9 @@
 /**
- * @fileoverview Console method management utilities
+ * @fileoverview Console method utilities
+ * @version 4.0.0
  */
 
-import type { ConsoleMethod, ConsoleSuppressionOptions } from "../types/console.types";
+import type { ConsoleMethod } from "../types/console.types";
 
 /**
  * Default console methods that can be suppressed
@@ -24,38 +25,6 @@ export const NON_ERROR_CONSOLE_METHODS: readonly ConsoleMethod[] = [
     "debug",
     "info"
 ] as const;
-
-/**
- * Determines which console methods should be suppressed based on configuration
- * @param options - Console suppression options
- * @param isDevelopment - Whether current environment is development
- * @returns Array of console methods to suppress
- */
-export const getMethodsToSuppress = (
-    options: ConsoleSuppressionOptions,
-    isDevelopment: boolean
-): ConsoleMethod[] => {
-    const { methods, suppressAllInDev, suppressAllInProd, preserveErrors } = options;
-
-    // If specific methods are provided, use them (overrides all other settings)
-    if (methods && methods.length > 0) {
-        return methods;
-    }
-
-    // Check if we should suppress based on environment
-    const shouldSuppressInCurrentEnv =
-        (isDevelopment && suppressAllInDev) ||
-        (!isDevelopment && suppressAllInProd);
-
-    if (!shouldSuppressInCurrentEnv) {
-        return [];
-    }
-
-    // Return appropriate method list based on preserveErrors setting
-    return preserveErrors
-        ? [...NON_ERROR_CONSOLE_METHODS]
-        : [...DEFAULT_CONSOLE_METHODS];
-};
 
 /**
  * Validates if a console method exists and is callable
