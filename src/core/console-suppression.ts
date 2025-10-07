@@ -45,9 +45,11 @@ function matchesUrl(currentHost: string, ruleUrl: string): boolean {
     // Normalize both URLs
     const cleanCurrent = currentHost.toLowerCase().replace(/^www\./, '');
     const cleanRule = ruleUrl.toLowerCase()
-        .replace(/^https?:\/\//, '')
-        .replace(/^www\./, '')
-        .replace(/\/$/, '');
+        .replace(/^https?:\/\//, '')  // Remove protocol
+        .replace(/^www\./, '')         // Remove www.
+        .replace(/:\d+/, '')           // Remove port number
+        .replace(/\/.*$/, '')          // Remove path
+        .replace(/\/$/, '');           // Remove trailing slash
 
     // Exact match or subdomain match
     return cleanCurrent === cleanRule || cleanCurrent.endsWith('.' + cleanRule);

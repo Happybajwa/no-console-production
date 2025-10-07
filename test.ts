@@ -108,6 +108,28 @@ test("Should respect enable: false", () => {
     restoreConsole();
 });
 
+test("Should strip port numbers from URL", () => {
+    (global as any).window.location.hostname = "localhost";
+
+    // URL with port should match hostname without port
+    suppressConsole({ url: "http://localhost:3000", enable: true });
+
+    assert(isConsoleSuppressionActive(), "Should match localhost regardless of port");
+
+    restoreConsole();
+});
+
+test("Should strip paths from URL", () => {
+    (global as any).window.location.hostname = "myapp.com";
+
+    // URL with path should match hostname
+    suppressConsole({ url: "https://myapp.com/some/path", enable: true });
+
+    assert(isConsoleSuppressionActive(), "Should match myapp.com regardless of path");
+
+    restoreConsole();
+});
+
 // ============================================================================
 // Multiple Rules Tests
 // ============================================================================
